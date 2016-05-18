@@ -35,8 +35,6 @@ enum
 	wxID_CAMFORMAT		= 1801,
 };
 
-static wxMenuBar *menuBar = NULL;
-
 class CGUIFrame : public wxFrame
 {
 // public methods	
@@ -66,6 +64,9 @@ protected:
 	void OnVideoFormat( wxCommandEvent& event );
 	void OnAbout( wxCommandEvent& event );
 	void OnExit( wxCommandEvent& WXUNUSED(pEvent) );
+
+private:
+	wxMenuBar *menuBar = nullptr;
 
 	DECLARE_EVENT_TABLE()
 };
