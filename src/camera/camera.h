@@ -58,7 +58,7 @@ public:
 
 // protected data
 protected:
-	cv::Mat		m_pVideoImg;
+	cv::Mat		m_VideoImg;
 
 	double		m_nFpsAlpha;
 	double		m_nFps;

@@ -51,7 +51,6 @@ CCamera::CCamera(  )
 	m_isRunning = false;
 	m_isPause = false;
 	// the new camera implementation
-	m_pVideoImg = NULL;
 	m_nFps = -1;
 	m_nFpsAlpha = 0.1;
 	m_isAvi = false;
@@ -68,7 +67,6 @@ CCamera::CCamera(  )
 ////////////////////////////////////////////////////////////////////
 CCamera::~CCamera( )
 {
-	m_pVideoImg = NULL;
 	m_pWorker = NULL;
 	m_pCameraView = NULL;
 	m_pFrame = NULL;
@@ -201,9 +199,9 @@ void  CCamera::Stop( )
 	m_isRunning = false;
 
 	m_Capture.release();
-	if( !m_pVideoImg.empty() )
+	if( !m_VideoImg.empty() )
 	{
-		m_pVideoImg.release();
+		m_VideoImg.release();
 	}
 }
 
@@ -252,19 +250,19 @@ void CCamera::GetNextFrame( void* )
     if( !pFrame.empty() )
     {
 		// if no video image 
-        if( !m_pVideoImg.empty() )
+        if( !m_VideoImg.empty() )
         {
-            m_pVideoImg.release();
-			m_pVideoImg = cv::Mat(cvSize( m_nWidth, m_nHeight ), 8, 3 );
+			m_VideoImg.release();
+			m_VideoImg = cv::Mat(cvSize( m_nWidth, m_nHeight ), 8, 3 );
         }
 		
 		// check for the last origin of the frame
-		cv::cvtColor(pFrame, m_pVideoImg, CV_BGR2RGB);
+		cv::cvtColor(pFrame, m_VideoImg, CV_BGR2RGB);
 
-		cv::Mat output(m_pVideoImg.clone());
+		cv::Mat output(m_VideoImg.clone());
 #ifdef _GUI_RUN
 		// Update gui
-		m_pCameraView->DrawCam(m_pVideoImg);
+		m_pCameraView->DrawCam(m_VideoImg);
 #endif	
 		
     }
@@ -303,7 +301,7 @@ void CCamera::GetNextFrame( void* )
 ////////////////////////////////////////////////////////////////////
 cv::Mat &CCamera::GetIFrame( )
 {
-	return( m_pVideoImg );
+	return( m_VideoImg );
 }
 
 
