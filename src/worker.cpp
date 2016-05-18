@@ -8,11 +8,6 @@
 //
 ////////////////////////////////////////////////////////////////////
 
-#ifdef __GNUG__
-#pragma implementation
-#pragma interface
-#endif
-
 // system headers
 #include <stdio.h>
 #include <stdlib.h>
@@ -122,7 +117,6 @@ double CwxopencvWorker::GetTime( void )
 ////////////////////////////////////////////////////////////////////
 void *CwxopencvWorker::Entry( )
 {
-	int i = 0;
 	m_bLife = 1;
 
 	m_pCamera->Start( );

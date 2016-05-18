@@ -62,8 +62,6 @@ private:
 	void	OnPaint(wxPaintEvent& event);
 	void	OnSize( wxSizeEvent& even );
 	double 	GetTime( void );
-	double		m_timePrevFrameStamp;
-	double		m_timeCurrFrameStamp;
 	wxBitmap currentBitmap_;
 	wxMutex  imageMutex_;
 

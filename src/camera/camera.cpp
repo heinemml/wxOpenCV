@@ -227,7 +227,7 @@ void testcallback(void* _image)
 ////////////////////////////////////////////////////////////////////
 void CCamera::GetNextFrame( void* )
 {
-    static int repositioning = 0;
+//    static int repositioning = 0;
     cv::Mat pFrame;
 
 	// get current frame time stamp
@@ -264,7 +264,6 @@ void CCamera::GetNextFrame( void* )
 		cv::Mat output(m_pVideoImg.clone());
 #ifdef _GUI_RUN
 		// Update gui
-		//std::cout << this << " " << pthread_self() << " sending to view" << std::endl;
 		m_pCameraView->DrawCam(m_pVideoImg);
 #endif	
 		

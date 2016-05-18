@@ -10,11 +10,6 @@
 // Licence:		Digital Entity
 ////////////////////////////////////////////////////////////////////
 
-#ifdef __GNUG__
-#pragma implementation
-#pragma interface
-#endif
-
 // system includes
 //#include "../stdafx.h"
 #include "highgui.h"
@@ -44,7 +39,7 @@
 #include <vfw.h>
 #endif
 
-#include "../camera.xpm"
+//#include "../camera.xpm"
 
 // main header
 #include "frame.h"
@@ -72,8 +67,8 @@ CGUIFrame::CGUIFrame( wxFrame *frame, const wxString& title,
 	wxFrame(frame, -1, title, pos, size, wxSYSTEM_MENU | wxMAXIMIZE_BOX | wxMINIMIZE_BOX |wxCLOSE_BOX| wxCAPTION |wxRESIZE_BORDER )
 {
 
-	wxIcon icon( camera_xpm );
-	SetIcon( icon );
+	//wxIcon icon( camera_xpm );
+	//SetIcon( icon );
 
 	// set bg color for my frame 
 	SetBackgroundColour( *wxLIGHT_GREY );
@@ -205,7 +200,7 @@ void CGUIFrame::OnAbout( wxCommandEvent& event )
 ////////////////////////////////////////////////////////////////////
 void CGUIFrame::OnVideoSource( wxCommandEvent& event )
 {
-    CCamView *pView = GetCameraView();
+//    CCamView *pView = GetCameraView();
 
 // for widnows do this
 #ifdef _WINDOWS
@@ -243,7 +238,7 @@ void CGUIFrame::OnVideoSource( wxCommandEvent& event )
 ////////////////////////////////////////////////////////////////////
 void CGUIFrame::OnVideoFormat( wxCommandEvent& event )
 {
-    CCamView *pView = GetCameraView();
+//    CCamView *pView = GetCameraView();
 
 // for windows do this
 #ifdef _WINDOWS

@@ -8,17 +8,10 @@
 //
 ////////////////////////////////////////////////////////////////////
 
-#ifdef __GNUG__
-#pragma implementation
-#pragma interface
-#endif
-
 #include "wx/wxprec.h"
 #include <wx/bitmap.h>
 #include <wx/gdicmn.h>
 #include "wx/statline.h"
-//#include "wx/minifram.h"
-//#include "wx/thread.h"
 
 #if defined(__WXMSW__)
     #ifdef wxHAVE_RAW_BITMAP
@@ -34,10 +27,6 @@
 #ifndef  WX_PRECOMP
   #include "wx/wx.h"
 #endif //precompiled headers
-
-#ifdef __WXX11__
-//#include "ronn.xpm"
-#endif
 
 #include "about.h"
 

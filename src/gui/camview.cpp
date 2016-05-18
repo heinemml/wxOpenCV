@@ -15,11 +15,6 @@
 
 #include <sys/timeb.h>
 
-#ifdef __GNUG__
-#pragma implementation
-#pragma interface
-#endif
-
 #include "wx/wxprec.h"
 #include <wx/image.h>
 
@@ -143,10 +138,10 @@ void CCamView::Draw( wxDC& dc )
 	m_bNewImage = false;
 	imageMutex_.Unlock();
 
-	double m_timeCurrFrameStamp = GetTime();
+	//double m_timeCurrFrameStamp = GetTime();
 	dc.DrawBitmap(currentBitmap_, x, y);
-	double delta = GetTime() - m_timeCurrFrameStamp;
-	std::cout << this << " draw: " << delta << std::endl;
+	//double delta = GetTime() - m_timeCurrFrameStamp;
+	//std::cout << this << " draw: " << delta << std::endl;
 
 	return;
 }
