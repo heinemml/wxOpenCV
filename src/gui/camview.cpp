@@ -52,9 +52,7 @@ CCamView::CCamView( wxWindow *frame, const wxPoint& pos, const wxSize& size ):
 	m_nWidth = size.GetWidth( );
 	m_nHeight = size.GetHeight( );
 
-	m_bDrawing = false;
-
-	m_bNewImage = 0;
+	m_bNewImage = false;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -79,7 +77,7 @@ CCamView::~CCamView( )
 bool CCamView::IsCaptureEnabled( )
 {
 //	return( m_pCamera->IsInitialized( ) );
-	return( 1 );
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -121,24 +119,21 @@ void CCamView::Draw( wxDC& dc )
 {
 	if( !dc.IsOk( )){ return; }
 
-	int x, y, w, h;
-	dc.GetClippingBox(&x, &y, &w, &h);
-
 	imageMutex_.Lock();
-	if(m_bNewImage && m_image.IsOk())
+	if(m_image.IsOk())
 	{
 		currentBitmap_ = wxBitmap(m_image.Scale(m_nWidth, m_nHeight));
 	}
-	else if (currentBitmap_.IsOk())
+	else if (!currentBitmap_.IsOk())
 	{
 		imageMutex_.Unlock();
 		return;
 	}
-
-	m_bNewImage = false;
 	imageMutex_.Unlock();
 
 	//double m_timeCurrFrameStamp = GetTime();
+	int x, y, w, h;
+	dc.GetClippingBox(&x, &y, &w, &h);
 	dc.DrawBitmap(currentBitmap_, x, y);
 	//double delta = GetTime() - m_timeCurrFrameStamp;
 	//std::cout << this << " draw: " << delta << std::endl;
@@ -157,24 +152,23 @@ void CCamView::DrawCam( cv::Mat& pImg )
 {
 	if( pImg.empty()) { return; };
 
-    cv::Mat pDstImg = pImg.clone();
+    cv::Mat dstImg = pImg.clone();
 
 	int nCamWidth = m_pCamera->m_nWidth;
 	int nCamHeight = m_pCamera->m_nHeight;
 
 	// draw a rectangle
-	cv::rectangle(pDstImg,
+	cv::rectangle(dstImg,
 				cvPoint( 10, 10 ),
 				cvPoint( nCamWidth-20, nCamHeight-20 ),
 				CV_RGB( 0,255,0 ), 1 );
 
 	// convert data from raw image to wxImg
-	wxImage tmpImage( nCamWidth, nCamHeight, pDstImg.data, true );
+	wxImage tmpImage( nCamWidth, nCamHeight, dstImg.data, true );
+
 	imageMutex_.Lock();
 	m_image = tmpImage.Copy();
 	imageMutex_.Unlock();
-
-	m_bNewImage = true;
 
 	Refresh(false);
 }

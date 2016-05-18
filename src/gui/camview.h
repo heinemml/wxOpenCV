@@ -51,7 +51,6 @@ protected:
 	wxBitmap	m_pBitmap;
 	wxImage m_image;
 
-  	bool	m_bDrawing;
 	bool	m_bNewImage;
 
 	int m_nWidth;
