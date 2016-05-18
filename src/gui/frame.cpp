@@ -109,14 +109,14 @@ CGUIFrame::CGUIFrame( wxFrame *frame, const wxString& title,
 	
 	// build cam canvas
 	m_pCamView = new CCamView( m_pMainPanel, wxPoint(5,15), wxSize(354, 256) );
-	pMainSizer->Add( m_pCamView, 1, wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL|wxEXPAND );
+	pMainSizer->Add( m_pCamView, 1, wxEXPAND );
 
 	m_pMainPanel->SetSizer( pMainSizer );
 	pMainSizer->SetSizeHints( m_pMainPanel );	
 	m_pMainPanel->SetAutoLayout( TRUE );
 
 	wxBoxSizer *pTopSizer = new wxBoxSizer(wxVERTICAL);
-	pTopSizer->Add( m_pMainPanel, 1, wxALIGN_CENTER|wxEXPAND, 0 );
+	pTopSizer->Add( m_pMainPanel, 1, wxEXPAND, 0 );
 	SetSizer( pTopSizer );
 
 	// display my stuff
