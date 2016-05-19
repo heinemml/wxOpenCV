@@ -35,7 +35,6 @@ public:
 public:
 	virtual ~CCamView( );
 	bool IsCaptureEnabled( );
-	void CheckUpdate( );
 
 	// Draw method
 	void DrawCam( cv::Mat &pImg );

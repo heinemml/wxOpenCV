@@ -170,19 +170,9 @@ void CCamView::DrawCam( cv::Mat& pImg )
 	m_image = tmpImage.Copy();
 	imageMutex_.Unlock();
 
-	Refresh(false);
-}
-
-////////////////////////////////////////////////////////////////////
-// Method:	CheckUpdate
-// Class:	CCamView
-// Purose:	CHeck for updates
-// Input:	reference to size event
-// Output:	nothing
-////////////////////////////////////////////////////////////////////
-void CCamView::CheckUpdate()
-{
-	Update( );
+	//Refresh(false);
+	wxPaintEvent event(wxEVT_PAINT);
+	wxPostEvent(this, event);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -199,4 +189,7 @@ void CCamView::OnSize( wxSizeEvent& event )
 
 	m_nWidth = nWidth;
 	m_nHeight = nHeight;
+
+	Refresh();
+	event.Skip();
 }
