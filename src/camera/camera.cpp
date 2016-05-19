@@ -26,18 +26,22 @@
 
 // GUI include
 #ifdef _GUI_RUN
+
 #include "../gui/camview.h"
 #include "../gui/frame.h"
+
 #endif
 
 // Main header
 #include "camera.h"
 
 #ifndef WIN32_LARRY
-        void testcallback(void* _image);
-        IplImage* m_pLnxFrame;
+
+void testcallback(void *_image);
+
+IplImage *m_pLnxFrame;
 #endif
-                                                                                                                             
+
 ////////////////////////////////////////////////////////////////////
 // Method:	Constructor
 // Class:	CCamera
@@ -45,7 +49,7 @@
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-CCamera::CCamera(  )
+CCamera::CCamera()
 {
 	m_pWorker = NULL;
 	m_isRunning = false;
@@ -54,7 +58,7 @@ CCamera::CCamera(  )
 	m_nFps = -1;
 	m_nFpsAlpha = 0.1;
 	m_isAvi = false;
-	
+
 	m_bIsChange = 0;
 }
 
@@ -65,7 +69,7 @@ CCamera::CCamera(  )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-CCamera::~CCamera( )
+CCamera::~CCamera()
 {
 	m_pWorker = NULL;
 	m_pCameraView = NULL;
@@ -79,12 +83,12 @@ CCamera::~CCamera( )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-int CCamera::Init(  )
+int CCamera::Init()
 {
-	m_timeCurrFrameStamp = m_pWorker->GetTime( );
+	m_timeCurrFrameStamp = m_pWorker->GetTime();
 	m_timePrevFrameStamp = m_timeCurrFrameStamp;
-	
-	return( 1 );
+
+	return (1);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -94,16 +98,16 @@ int CCamera::Init(  )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-int CCamera::GetSize( )
+int CCamera::GetSize()
 {
 	// now get my properties
-	m_nWidth = (int)m_Capture.get(cv::CAP_PROP_FRAME_WIDTH);
-	m_nHeight = (int)m_Capture.get(cv::CAP_PROP_FRAME_HEIGHT);
+	m_nWidth = (int) m_Capture.get(cv::CAP_PROP_FRAME_WIDTH);
+	m_nHeight = (int) m_Capture.get(cv::CAP_PROP_FRAME_HEIGHT);
 	// set camview size
-	m_pCameraView->SetSize( m_nWidth, m_nHeight );
-	m_pFrame->ResetLayout( );
+	m_pCameraView->SetSize(m_nWidth, m_nHeight);
+	m_pFrame->ResetLayout();
 
-	return( 0 );
+	return (0);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -113,7 +117,7 @@ int CCamera::GetSize( )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-void CCamera::Start( )
+void CCamera::Start()
 {
 	m_Capture.open(0);
 
@@ -121,7 +125,7 @@ void CCamera::Start( )
 	// grab first frame to initialize format
 	m_Capture.read(pFrame);
 	// get camera's size
-	GetSize( );
+	GetSize();
 
 #if 0
 	int ncameras = cvcamGetCamerasCount();
@@ -150,7 +154,7 @@ void CCamera::Start( )
 	cvcamInit();
 	Sleep( 5000 );
 	cvcamStart();
-#endif	
+#endif
 
 	m_isRunning = true;
 }
@@ -162,12 +166,12 @@ void CCamera::Start( )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-void CCamera::PauseResume( )
+void CCamera::PauseResume()
 {
-	if( m_isPause )
+	if (m_isPause)
 	{
 		m_isPause = false;
-	} 
+	}
 	else
 	{
 		m_isPause = true;
@@ -181,7 +185,7 @@ void CCamera::PauseResume( )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-void CCamera::IsChanged( )
+void CCamera::IsChanged()
 {
 	m_bIsChange = 1;
 	m_isPause = true;
@@ -194,12 +198,12 @@ void CCamera::IsChanged( )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-void  CCamera::Stop( )
+void  CCamera::Stop()
 {
 	m_isRunning = false;
 
 	m_Capture.release();
-	if( !m_VideoImg.empty() )
+	if (!m_VideoImg.empty())
 	{
 		m_VideoImg.release();
 	}
@@ -208,12 +212,14 @@ void  CCamera::Stop( )
 ////////////////////////////////////////////////////////////////////
 // feedback - only for linux
 #ifndef WIN32_LARRY
-void testcallback(void* _image)
+
+void testcallback(void *_image)
 {
-	IplImage* image = (IplImage*)_image;
-	cvLine(image, cvPoint(0, 0), cvPoint(image->width, image->height),CV_RGB(255, 0, 0), 1);
-	m_pLnxFrame = image ;
+	IplImage *image = (IplImage *) _image;
+	cvLine(image, cvPoint(0, 0), cvPoint(image->width, image->height), CV_RGB(255, 0, 0), 1);
+	m_pLnxFrame = image;
 }
+
 #endif
 
 ////////////////////////////////////////////////////////////////////
@@ -223,14 +229,14 @@ void testcallback(void* _image)
 // Input:	pointer to void
 // Output:	Nothing
 ////////////////////////////////////////////////////////////////////
-void CCamera::GetNextFrame( void* )
+void CCamera::GetNextFrame(void *)
 {
 //    static int repositioning = 0;
-    cv::Mat pFrame;
+	cv::Mat pFrame;
 
 	// get current frame time stamp
-    m_timeCurrFrameStamp = m_pWorker->GetTime( );
-	if( m_timeCurrFrameStamp - m_timePrevFrameStamp  < 5 )
+	m_timeCurrFrameStamp = m_pWorker->GetTime();
+	if (m_timeCurrFrameStamp - m_timePrevFrameStamp < 5)
 		return;
 	else
 		m_timePrevFrameStamp = m_timeCurrFrameStamp;
@@ -239,57 +245,55 @@ void CCamera::GetNextFrame( void* )
 	//pFrame = cvQueryFrame( m_pCapture );
 
 	// if this was avi and frame is zero(end or none?) stop
-    if( !pFrame.empty() && m_isAvi )
-    {
-        //this->StopAvi( 0,0 );
-        return;
+	if (!pFrame.empty() && m_isAvi)
+	{
+		//this->StopAvi( 0,0 );
+		return;
 	}
 
 	////////////////////////////
 	// if video window ? & frame ?
-    if( !pFrame.empty() )
-    {
+	if (!pFrame.empty())
+	{
 		// if no video image 
-        if( !m_VideoImg.empty() )
-        {
+		if (!m_VideoImg.empty())
+		{
 			m_VideoImg.release();
-			m_VideoImg = cv::Mat(cvSize( m_nWidth, m_nHeight ), 8, 3 );
-        }
-		
+			m_VideoImg = cv::Mat(cvSize(m_nWidth, m_nHeight), 8, 3);
+		}
+
 		// check for the last origin of the frame
 		cv::cvtColor(pFrame, m_VideoImg, CV_BGR2RGB);
 
-		cv::Mat output(m_VideoImg.clone());
 #ifdef _GUI_RUN
 		// Update gui
 		m_pCameraView->DrawCam(m_VideoImg);
-#endif	
-		
-    }
+#endif
+	}
 
 
 	// If camera started
-    if( m_isRunning )
-    {
+	if (m_isRunning)
+	{
 		// get current frame time stamp
-        m_timeCurrFrameStamp = m_pWorker->GetTime( );
-        // update fps
-        if( m_nFps < 0 )
+		m_timeCurrFrameStamp = m_pWorker->GetTime();
+		// update fps
+		if (m_nFps < 0)
 		{
-            m_nFps = 1000 / ( m_timeCurrFrameStamp - m_timePrevFrameStamp );
-		} else
-		{	
-            m_nFps = ( 1 - m_nFpsAlpha ) * m_nFps + m_nFpsAlpha * 
-						1000 / ( m_timeCurrFrameStamp - m_timePrevFrameStamp );
+			m_nFps = 1000 / (m_timeCurrFrameStamp - m_timePrevFrameStamp);
+		}
+		else
+		{
+			m_nFps = (1 - m_nFpsAlpha) * m_nFps + m_nFpsAlpha *
+												  1000 / (m_timeCurrFrameStamp - m_timePrevFrameStamp);
 		}
 		// set current time stamp as previuos
-        m_timePrevFrameStamp = m_timeCurrFrameStamp;
+		m_timePrevFrameStamp = m_timeCurrFrameStamp;
 		// get info of number of frames per second in a string
 		// for debuging/etc
-        sprintf( m_strFps, "FPS: %5.1f", m_nFps );
-		m_pFrame->SetStatusBarText( m_strFps );
-
-    }
+		sprintf(m_strFps, "FPS: %5.1f", m_nFps);
+		m_pFrame->UpdateFPS(m_strFps);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -299,9 +303,9 @@ void CCamera::GetNextFrame( void* )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-cv::Mat &CCamera::GetIFrame( )
+cv::Mat &CCamera::GetIFrame()
 {
-	return( m_VideoImg );
+	return (m_VideoImg);
 }
 
 
@@ -312,24 +316,24 @@ cv::Mat &CCamera::GetIFrame( )
 // Input:	nothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-int CCamera::Run( ) 
+int CCamera::Run()
 {
 
-	if( !m_isPause )
+	if (!m_isPause)
 	{
 		// Get my next frame
-		this->GetNextFrame( NULL );
+		this->GetNextFrame(NULL);
 	} else
 	{
-		if( m_bIsChange == 1 )
+		if (m_bIsChange == 1)
 		{
 			// check size
-			Stop( );
+			Stop();
 			//Start( );
 			m_bIsChange = 0;
 			m_isPause = 0;
 		}
 	}
 
-	return( 0 );
+	return (0);
 }

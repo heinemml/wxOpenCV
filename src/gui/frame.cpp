@@ -47,12 +47,15 @@
 /////////////////////////////////////////////////////////////////////////////
 // CGUIFrame
 
+wxDEFINE_EVENT(EVT_UPDATE_FPS, wxCommandEvent);
+
 BEGIN_EVENT_TABLE(CGUIFrame, wxFrame)
 	// menu items
 	EVT_MENU( wxID_CAMSRC, CGUIFrame::OnVideoSource )
 	EVT_MENU( wxID_CAMFORMAT, CGUIFrame::OnVideoFormat )
 	EVT_MENU( wxID_ABOUT, CGUIFrame::OnAbout )
 	EVT_MENU( wxID_EXIT, CGUIFrame::OnExit )
+	EVT_COMMAND(wxID_ANY, EVT_UPDATE_FPS, CGUIFrame::UpdateStatusbar )
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////
@@ -281,10 +284,16 @@ void CGUIFrame::OnVideoFormat( wxCommandEvent& event )
 // Input:	mothing
 // Output:	nothing
 ////////////////////////////////////////////////////////////////////
-void CGUIFrame::SetStatusBarText( const char* strText )
+void CGUIFrame::UpdateFPS( const char* strText )
 {
-	GetStatusBar()->SetStatusText( strText );
-	return;
+	wxCommandEvent event(EVT_UPDATE_FPS);
+	event.SetString(strText);
+	wxPostEvent(this, event);
+}
+
+void CGUIFrame::UpdateStatusbar(wxCommandEvent &event)
+{
+	GetStatusBar()->SetStatusText( event.GetString() );
 }
 
 ////////////////////////////////////////////////////////////////////

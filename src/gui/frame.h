@@ -31,9 +31,11 @@ class CwxopencvWorker;
 enum
 {
 	// menu items
-	wxID_CAMSRC			= 1800,
-	wxID_CAMFORMAT		= 1801,
+	wxID_CAMSRC				= 1800,
+	wxID_CAMFORMAT			= 1801,
 };
+
+wxDECLARE_EVENT(EVT_UPDATE_FPS, wxCommandEvent);
 
 class CGUIFrame : public wxFrame
 {
@@ -44,7 +46,7 @@ public:
 	virtual ~CGUIFrame( );
 	CCamView* GetCameraView( );
 	void SetParentApp( Cwxopencv *pWxopencv );
-	void SetStatusBarText( const char* strText );
+	void UpdateFPS( const char* strText );
 	void ResetLayout( );
 
 // public data
@@ -67,6 +69,8 @@ protected:
 
 private:
 	wxMenuBar *menuBar = nullptr;
+
+	void UpdateStatusbar(wxCommandEvent& event);
 
 	DECLARE_EVENT_TABLE()
 };
